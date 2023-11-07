@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title>BDT test</title>
+</head>
+<body>
+    <h1>Prueba de chatbot</h1>
+    <input type="button" value="Start Chat" onclick="startChat();" />
+
+    <style type='text/css'>
+        .embeddedServiceHelpButton .helpButton .uiButton {
+            background-color: #005290;
+            font-family: "Arial", sans-serif;
+        }
+        .embeddedServiceHelpButton .helpButton .uiButton:focus {
+            outline: 1px solid #005290;
+        }
+    </style>
+    
+    <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+    <script type='text/javascript'>
+        var initESW = function(gslbBaseURL) {
+            embedded_svc.settings.displayHelpButton = true; //Or false
+            embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+    
+            embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+            embedded_svc.settings.entryFeature = 'LiveAgent';
+    
+            embedded_svc.init(
+                'https://arwin2-dev-ed.develop.my.salesforce.com',
+                'https://arwin2-dev-ed.develop.my.site.com/BDTprueba',
+                gslbBaseURL,
+                '00DDp000001yU6m',
+                'TestQueue_group',
+                {
+                    baseLiveAgentContentURL: 'https://c.la1-c2-ia6.salesforceliveagent.com/content',
+                    deploymentId: '572Dp000000LUQ6',
+                    buttonId: '00DDp000001yU6m',
+                    baseLiveAgentURL: 'https://d.la1-c2-ia6.salesforceliveagent.com/chat',
+                    eswLiveAgentDevName: 'TestQueue_group',
+                    isOfflineSupportEnabled: true
+                }
+            );
+        };
+    
+        if (!window.embedded_svc) {
+            var s = document.createElement('script');
+            s.setAttribute('src', 'https://arwin2-dev-ed.develop.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+            s.onload = function() {
+                initESW(null);
+            };
+            document.body.appendChild(s);
+        } else {
+            initESW('https://service.force.com');
+        }
+    </script>
+    <script>
+        function startChat() {
+            console.log('Inside Start Chat');
+            embedded_svc.liveAgentAPI.startChat({
+            directToAgentRouting: {
+                buttonId: "00DDp000001yU6m",
+                fallback: true
+            },
+                extraPrechatInfo: [],
+                extraPrechatFormDetails: []
+            });
+        }
+    </script>
+</body>
+</html>
